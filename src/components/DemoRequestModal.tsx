@@ -30,12 +30,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
-  firstName: z.string().min(1, '请输入名字'),
-  lastName: z.string().min(1, '请输入姓氏'),
-  workEmail: z.string().email('请输入有效的邮箱地址'),
-  phoneNumber: z.string().min(1, '请输入电话号码'),
-  userLicenses: z.string().min(1, '请选择用户许可证数量'),
-  role: z.string().min(1, '请选择您的角色'),
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  workEmail: z.string().email('Please enter a valid email address'),
+  phoneNumber: z.string().min(1, 'Phone number is required'),
+  userLicenses: z.string().min(1, 'Please select number of user licenses'),
+  role: z.string().min(1, 'Please select your role'),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -81,8 +81,8 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
       }
 
       toast({
-        title: '申请提交成功',
-        description: '我们的销售专家会尽快与您联系。',
+        title: 'Request submitted successfully',
+        description: 'Our sales expert will contact you soon.',
       });
 
       form.reset();
@@ -90,8 +90,8 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
     } catch (error) {
       console.error('Error submitting demo request:', error);
       toast({
-        title: '提交失败',
-        description: '提交申请时出现错误，请稍后重试。',
+        title: 'Submission failed',
+        description: 'An error occurred while submitting your request. Please try again later.',
         variant: 'destructive',
       });
     } finally {
