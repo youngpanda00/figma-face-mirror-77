@@ -62,12 +62,9 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
   });
 
   const onSubmit = async (data: FormData) => {
-    console.log('=== Demo Request Submission Started ===');
-    console.log('Form data:', data);
     setIsSubmitting(true);
     
     try {
-      // Create the insert data object
       const insertData = {
         first_name: data.firstName,
         last_name: data.lastName,
@@ -77,44 +74,15 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
         role: data.role,
       };
       
-      console.log('Prepared insert data:', insertData);
-      console.log('Attempting to insert into demo_requests table...');
-      
-      // Try the insert operation with explicit anon key
-      const { data: insertResult, error } = await supabase
+      const { data: result, error } = await supabase
         .from('demo_requests')
         .insert(insertData)
         .select();
 
-      console.log('Supabase response - data:', insertResult);
-      console.log('Supabase response - error:', error);
-
       if (error) {
-        console.error('=== INSERT ERROR ===');
-        console.error('Error code:', error.code);
-        console.error('Error message:', error.message);
-        console.error('Error details:', error.details);
-        console.error('Error hint:', error.hint);
-        
-        // More specific error handling
-        if (error.code === '42501') {
-          throw new Error('Permission denied - RLS policy issue');
-        } else if (error.code === '23505') {
-          throw new Error('Duplicate submission detected');
-        } else {
-          throw error;
-        }
+        throw error;
       }
 
-      if (!insertResult || insertResult.length === 0) {
-        console.error('=== NO DATA RETURNED ===');
-        console.error('Insert may have failed silently');
-        throw new Error('No data returned from insert operation');
-      }
-
-      console.log('=== SUCCESS ===');
-      console.log('Successfully inserted record:', insertResult[0]);
-      
       toast({
         title: 'Request submitted successfully',
         description: 'Our sales expert will contact you soon.',
@@ -124,20 +92,12 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
       setIsOpen(false);
       
     } catch (error) {
-      console.error('=== SUBMISSION FAILED ===');
-      console.error('Error type:', typeof error);
-      console.error('Error object:', error);
+      console.error('Submission failed:', error);
       
       let errorMessage = 'An error occurred while submitting your request. Please try again later.';
       
       if (error instanceof Error) {
-        console.error('Error message:', error.message);
-        
-        if (error.message.includes('Permission denied') || error.message.includes('policy')) {
-          errorMessage = 'Unable to submit request due to permission settings. Please contact support.';
-        } else if (error.message.includes('Duplicate')) {
-          errorMessage = 'This request has already been submitted. Please check your email.';
-        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+        if (error.message.includes('network') || error.message.includes('fetch')) {
           errorMessage = 'Network error. Please check your connection and try again.';
         }
       }
@@ -149,7 +109,6 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
       });
     } finally {
       setIsSubmitting(false);
-      console.log('=== Submission process completed ===');
     }
   };
 
