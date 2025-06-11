@@ -62,24 +62,38 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
   });
 
   const onSubmit = async (data: FormData) => {
+    console.log('Form submission started with data:', data);
     setIsSubmitting(true);
     
     try {
-      const { error } = await supabase
+      console.log('Attempting to insert into Supabase...');
+      
+      const insertData = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        work_email: data.workEmail,
+        phone_number: data.phoneNumber,
+        user_licenses: data.userLicenses,
+        role: data.role,
+      };
+      
+      console.log('Insert data prepared:', insertData);
+      
+      const { data: insertResult, error } = await supabase
         .from('demo_requests')
-        .insert({
-          first_name: data.firstName,
-          last_name: data.lastName,
-          work_email: data.workEmail,
-          phone_number: data.phoneNumber,
-          user_licenses: data.userLicenses,
-          role: data.role,
-        });
+        .insert(insertData)
+        .select();
+
+      console.log('Supabase insert result:', insertResult);
+      console.log('Supabase insert error:', error);
 
       if (error) {
+        console.error('Supabase error details:', error);
         throw error;
       }
 
+      console.log('Insert successful, showing success toast');
+      
       toast({
         title: 'Request submitted successfully',
         description: 'Our sales expert will contact you soon.',
