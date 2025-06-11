@@ -67,6 +67,7 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
     setIsSubmitting(true);
     
     try {
+      // Create the insert data object
       const insertData = {
         first_name: data.firstName,
         last_name: data.lastName,
@@ -79,6 +80,7 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
       console.log('Prepared insert data:', insertData);
       console.log('Attempting to insert into demo_requests table...');
       
+      // Try the insert operation with explicit anon key
       const { data: insertResult, error } = await supabase
         .from('demo_requests')
         .insert(insertData)
@@ -93,7 +95,15 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
         console.error('Error message:', error.message);
         console.error('Error details:', error.details);
         console.error('Error hint:', error.hint);
-        throw error;
+        
+        // More specific error handling
+        if (error.code === '42501') {
+          throw new Error('Permission denied - RLS policy issue');
+        } else if (error.code === '23505') {
+          throw new Error('Duplicate submission detected');
+        } else {
+          throw error;
+        }
       }
 
       if (!insertResult || insertResult.length === 0) {
@@ -113,18 +123,6 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
       form.reset();
       setIsOpen(false);
       
-      // Verify the insert by attempting to count records
-      console.log('Verifying insert by counting records...');
-      const { count, error: countError } = await supabase
-        .from('demo_requests')
-        .select('*', { count: 'exact', head: true });
-      
-      if (countError) {
-        console.warn('Could not verify insert:', countError);
-      } else {
-        console.log('Total records in table after insert:', count);
-      }
-      
     } catch (error) {
       console.error('=== SUBMISSION FAILED ===');
       console.error('Error type:', typeof error);
@@ -134,8 +132,13 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
       
       if (error instanceof Error) {
         console.error('Error message:', error.message);
-        if (error.message.includes('policy')) {
-          errorMessage = 'Permission error. Please try again or contact support.';
+        
+        if (error.message.includes('Permission denied') || error.message.includes('policy')) {
+          errorMessage = 'Unable to submit request due to permission settings. Please contact support.';
+        } else if (error.message.includes('Duplicate')) {
+          errorMessage = 'This request has already been submitted. Please check your email.';
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+          errorMessage = 'Network error. Please check your connection and try again.';
         }
       }
       
