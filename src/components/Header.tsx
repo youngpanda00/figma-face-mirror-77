@@ -1,4 +1,6 @@
+
 import React, { useState } from 'react';
+import { DemoRequestModal } from './DemoRequestModal';
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,9 +43,11 @@ export const Header: React.FC = () => {
           <button className="self-stretch my-auto hover:text-gray-200 transition-colors">
             Sign In
           </button>
-          <button className="self-stretch border gap-2.5 w-[142px] my-auto px-[15px] py-2 rounded-[43px] border-white border-solid hover:bg-white hover:text-black transition-colors">
-            Request a Demo
-          </button>
+          <DemoRequestModal>
+            <button className="self-stretch border gap-2.5 w-[142px] my-auto px-[15px] py-2 rounded-[43px] border-white border-solid hover:bg-white hover:text-black transition-colors">
+              Request a Demo
+            </button>
+          </DemoRequestModal>
         </div>
       </nav>
     </header>

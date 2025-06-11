@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { DemoRequestModal } from './DemoRequestModal';
 
 export const Hero: React.FC = () => {
   return (
@@ -16,9 +17,11 @@ export const Hero: React.FC = () => {
             </p>
           </div>
           <div className="flex items-center gap-5 text-base font-bold text-center leading-none mt-[30px]">
-            <button className="self-stretch border min-h-[50px] w-[180px] my-auto rounded-[100px] border-white border-solid hover:bg-white hover:text-black transition-colors flex items-center justify-center">
-              Book a Demo
-            </button>
+            <DemoRequestModal>
+              <button className="self-stretch border min-h-[50px] w-[180px] my-auto rounded-[100px] border-white border-solid hover:bg-white hover:text-black transition-colors flex items-center justify-center">
+                Book a Demo
+              </button>
+            </DemoRequestModal>
             <button className="self-stretch bg-[rgba(27,202,150,1)] min-h-[50px] w-[180px] my-auto rounded-[100px] hover:bg-[rgba(27,202,150,0.9)] transition-colors flex items-center justify-center">
               Sign up
             </button>
