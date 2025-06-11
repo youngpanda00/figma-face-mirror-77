@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 export const Hero: React.FC = () => {
@@ -18,7 +19,7 @@ export const Hero: React.FC = () => {
             <button className="self-stretch border min-h-[50px] w-[180px] my-auto rounded-[100px] border-white border-solid hover:bg-white hover:text-black transition-colors flex items-center justify-center">
               Book a Demo
             </button>
-            <button className="self-stretch bg-[rgba(27,202,150,1)] min-h-[50px] w-[180px] my-auto rounded-[100px] hover:bg-[rgba(27,202,150,0.9)] transition-colors flex items-center justify-center">
+            <button className="self-stretch bg-red-500 min-h-[50px] w-[180px] my-auto rounded-[100px] hover:bg-red-600 transition-colors flex items-center justify-center">
               Sign up
             </button>
           </div>
