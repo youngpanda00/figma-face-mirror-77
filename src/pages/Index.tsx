@@ -15,7 +15,7 @@ const Index: React.FC = () => {
         <img
           src="https://cdn.builder.io/api/v1/image/assets/b7536598065f4e65a807787a2ac37040/46ad1b57fd4bfdbb03c09085359ae23e772768d2?placeholderIfAbsent=true"
           className="absolute h-full w-full object-cover inset-0"
-          alt="Hero background"
+          alt="Hero background Test"
         />
         <Header />
         <Hero />
