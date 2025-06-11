@@ -51,10 +51,10 @@ export const DemoRequestModal: React.FC<DemoRequestModalProps> = ({ children }) 
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] bg-white border-0 shadow-2xl">
+      <DialogContent className="w-[420px] max-w-[420px] bg-white border-0 shadow-2xl">
         <DialogHeader className="text-center pb-6">
-          <DialogTitle className="text-2xl font-bold text-black">REQUEST A DEMO</DialogTitle>
-          <p className="text-gray-600 mt-2">Speak with a Lofty sales productivity expert</p>
+          <DialogTitle className="text-2xl font-bold text-black text-center">REQUEST A DEMO</DialogTitle>
+          <p className="text-gray-600 mt-2 text-center">Speak with a Lofty sales productivity expert</p>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4">
